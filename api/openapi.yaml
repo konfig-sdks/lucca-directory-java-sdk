@@ -1,0 +1,2369 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: developers@lucca.fr
+    name: Socle HR
+    url: https://www.lucca.fr
+  description: |
+    Welcome on the documentation for the Directory v3 API.
+  title: Directory-v3
+  version: "1.0"
+  x-konfig-ignore:
+    object-with-no-properties: true
+  x-konfig-has-globally-required-security: true
+servers:
+- description: Your production environment (France)
+  url: https://example.ilucca.net
+- description: Your test environment (France)
+  url: https://example.ilucca-test.net
+security:
+- Authorization: []
+tags:
+- name: Users
+paths:
+  /api/v3/users:
+    get:
+      description: |
+        Retrieve a list of Users.
+
+        By default, former employees are excluded from the response. In order to retrieve them, you may add the `?dtContractEnd=notequal,null` query parameter to your request.
+      operationId: Users_listExcludedFormer
+      parameters:
+      - description: |
+          `{comparator},{date-time}`.
+        explode: true
+        in: query
+        name: dtContractEnd
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "{comparator},{date-time}"
+        explode: true
+        in: query
+        name: dtContractStart
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: User's identifier
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        style: form
+      - description: "{comparator},{date-time}"
+        explode: true
+        in: query
+        name: modifiedAt
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "{offset},{limit}. Defaults to 0,1000."
+        explode: true
+        in: query
+        name: paging
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        style: form
+      - description: User's mail
+        explode: true
+        in: query
+        name: mail
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: User's login
+        explode: true
+        in: query
+        name: login
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersListExcludedFormerRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples: {}
+              schema:
+                $ref: '#/components/schemas/UsersListExcludedFormerResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: User Not Found
+      summary: List Users
+      tags:
+      - Users
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--api-v3-users
+      x-content-type: application/json
+      x-accepts: application/json
+    post:
+      description: ""
+      operationId: Users_createNewUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersCreateNewUserResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "500":
+          description: Internal Server Error
+      summary: Create a new User
+      tags:
+      - Users
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--api-v3-users
+      x-accepts: application/json
+  /api/v3/users/{userId}:
+    get:
+      description: Retrieve a single User identified by its unique identifier.
+      operationId: Users_getById
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: |
+          Comma-separated list of fields of the user to include in responses. Extended data can be retrieved with `?fields=extendedData`.
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples: {}
+              schema:
+                $ref: '#/components/schemas/UsersGetByIdResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: User Not Found
+      summary: Get a User by Id
+      tags:
+      - Users
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--api-v3-users-userId
+      x-accepts: application/json
+    put:
+      description: Update fields of a single User identified by its unique id.
+      operationId: Users_updateById
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Fields of the user, comma separated"
+        explode: true
+        in: query
+        name: fields
+        required: false
+        schema:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        style: form
+      requestBody:
+        content:
+          application/json:
+            examples: {}
+            schema:
+              $ref: '#/components/schemas/UsersUpdateByIdRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UsersUpdateByIdRequest1'
+        description: ""
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update a User by id
+      tags:
+      - Users
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-put--api-v3-users-userId
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    User:
+      description: ""
+      properties:
+        id:
+          example: 416
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-id
+        name:
+          example: John Doe
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-name
+        url:
+          example: http://lucca.test/api/users/1
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-url
+        displayName:
+          example: Doe John
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-displayName
+        modifiedOn:
+          example: 2015-09-07T10:20:06.583
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-modifiedOn
+        lastName:
+          example: DOE
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-lastName
+        firstName:
+          example: John
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-firstName
+        login:
+          example: jdoe
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-login
+        mail:
+          example: no-reply@lucca.fr
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-mail
+        dtContractStart:
+          example: 2014-09-01T00:00:00
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-dtContractStart
+        dtContractEnd: {}
+        birthDate:
+          example: 1989-12-22T00:00:00
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-birthDate
+        employeeNumber:
+          example: "00057"
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-employeeNumber
+        calendar:
+          $ref: '#/components/schemas/User_calendar'
+        culture:
+          $ref: '#/components/schemas/User_culture'
+        picture:
+          $ref: '#/components/schemas/User_picture'
+        applicationData:
+          $ref: '#/components/schemas/User_applicationData'
+        legalEntity:
+          $ref: '#/components/schemas/User_legalEntity'
+        department:
+          $ref: '#/components/schemas/User_department'
+        manager:
+          $ref: '#/components/schemas/User_manager'
+        rolePrincipal:
+          $ref: '#/components/schemas/User_rolePrincipal'
+        habilitedRoles:
+          items:
+            $ref: '#/components/schemas/User_habilitedRoles_inner'
+          minItems: 1
+          type: array
+          uniqueItems: true
+        userWorkCycles:
+          items:
+            $ref: '#/components/schemas/User_userWorkCycles_inner'
+          minItems: 1
+          type: array
+          uniqueItems: true
+      required:
+      - applicationData
+      - birthDate
+      - calendar
+      - culture
+      - department
+      - displayName
+      - dtContractStart
+      - employeeNumber
+      - firstName
+      - habilitedRoles
+      - id
+      - lastName
+      - legalEntity
+      - login
+      - mail
+      - manager
+      - modifiedOn
+      - name
+      - picture
+      - rolePrincipal
+      - url
+      - userWorkCycles
+      title: User
+      type: object
+      x-examples:
+        example-1:
+          id: 416
+          name: John Doe
+          url: http://lucca.test/api/users/1
+          displayName: Doe John
+          modifiedOn: 2015-09-07T10:20:06.583
+          lastName: DOE
+          firstName: John
+          login: jdoe
+          mail: no-reply@lucca.fr
+          dtContractStart: 2014-09-01T00:00:00
+          birthDate: 1989-12-22T00:00:00
+          employeeNumber: "00057"
+          calendar:
+            id: 1
+            url: http://lucca.test/api/v3/publicHolidayCalendars/1
+            name: Jours fériés en France
+          culture:
+            id: 1036
+            name: français (France)
+            url: http://lucca.test/api/v3/cultures/1036
+          picture:
+            id: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+            url: http://lucca.test/api/v3/files/74d381db-dd4d-4f64-bc1e-582d806e58a8
+            name: jdoe.png
+          applicationData:
+            profile_figgo:
+              id: 1
+              name: Cadre (218 jours)
+              url: https://lucca.local.dev/api/v3/leaveprofiles/1
+            profile_utime:
+              id: 1
+              name: Lucca
+              url: https://lucca.local.dev/api/v3/utimeprofile_ede6d6bb22bcb47bf5b839d5f653fc7e41122f0eea37a7786ea9e095537a705c/1
+          legalEntity:
+            id: 1
+            name: Lucca
+            url: http://lucca.test/api/v3/legalEntities/1
+          department:
+            id: 13
+            name: BU Timmi/Lucca
+            url: http://lucca.test/api/v3/departments/13
+          manager:
+            id: 383
+            name: Roger Smith
+            url: http://lucca.test/api/v3/users/383
+          rolePrincipal:
+            id: 55
+            name: User
+            url: http://lucca.test/api/v3/roles/55
+          habilitedRoles:
+          - id: 59
+            name: Employee +
+            url: http://lucca.test/api/v3/roles/59
+          - id: 63
+            name: Analytics access
+            url: http://lucca.test/api/roles/63
+          userWorkCycles:
+          - Id: 288
+            OwnerID: 416
+            WorkCycleID: 6
+            StartsOn: 1900-01-01T00:00:00
+            EndsOn: 2015-03-09T00:00:00
+          - Id: 289
+            OwnerID: 416
+            WorkCycleID: 9
+            StartsOn: 2015-03-10T00:00:00
+            EndsOn: 2015-10-13T00:00:00
+          - Id: 317
+            OwnerID: 416
+            WorkCycleID: 14
+            StartsOn: 2015-10-13T00:00:00
+            EndsOn: 9999-12-31T00:00:00
+    UsersListExcludedFormerRequest:
+      properties: {}
+      type: object
+    UsersUpdateByIdRequest:
+      example:
+        lastName: Doe
+        mail: jdoe@corp.com
+        gender: Male
+        departmentId: 14
+        jobTitle: Developer
+        bankName: My Bank
+        login: jdoe
+        employeeNumber: "000000452"
+        personalEmail: email@test.fr
+        cspId: 2
+        quote: string
+        legalEntityId: 1
+        professionalMobile: "0612345678"
+        rolePrincipalId: 55
+        userWorkCycles:
+        - endsOn: endsOn
+          id: 0
+          startsOn: startsOn
+          workCycleId: 6
+        - endsOn: endsOn
+          id: 0
+          startsOn: startsOn
+          workCycleId: 6
+        address: "13, rue Martin Bernard, 75 Paris"
+        managerId: 455
+        birthDate: 1989-12-22T00:00:00
+        directLine: "0123456789"
+        cultureId: 1040
+        firstName: John
+        personalMobile: "0612345678"
+        habilitedRoles:
+        - id: 1
+        - id: 1
+        calendarId: ""
+        nationality: French
+      properties:
+        firstName:
+          example: John
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-firstName
+        lastName:
+          example: Doe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-lastName
+        mail:
+          example: jdoe@corp.com
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-mail
+        login:
+          example: jdoe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-login
+        legalEntityId:
+          example: 1
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-legalEntityId
+        cspId:
+          example: 2
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cspId
+        calendarId:
+          type: "null"
+        employeeNumber:
+          example: "000000452"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-employeeNumber
+        birthDate:
+          example: 1989-12-22T00:00:00
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-birthDate
+        userWorkCycles:
+          items:
+            $ref: '#/components/schemas/UsersUpdateByIdRequest_userWorkCycles_inner'
+          type: array
+        departmentId:
+          example: 14
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-departmentId
+        managerId:
+          example: 455
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-managerId
+        rolePrincipalId:
+          example: 55
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-rolePrincipalId
+        habilitedRoles:
+          items:
+            $ref: '#/components/schemas/UsersUpdateByIdRequest_habilitedRoles_inner'
+          type: array
+        cultureId:
+          example: 1040
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cultureId
+        address:
+          example: "13, rue Martin Bernard, 75 Paris"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-address
+        bankName:
+          example: My Bank
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-bankName
+        directLine:
+          example: "0123456789"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-directLine
+        jobTitle:
+          example: Developer
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-jobTitle
+        gender:
+          example: Male
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-gender
+        nationality:
+          example: French
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-nationality
+        personalEmail:
+          example: email@test.fr
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalEmail
+        personalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalMobile
+        professionalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-professionalMobile
+        quote:
+          example: string
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-quote
+      type: object
+      x-examples:
+        example-1:
+          firstName: John
+          lastName: Doe
+          mail: jdoe@corp.com
+          login: jdoe
+          legalEntityId: 1
+          cspId: 2
+          employeeNumber: "000000452"
+          birthDate: 1989-12-22T00:00:00
+          userWorkCycles:
+          - id: 67
+            startsOn: 1920-01-01T00:00:00
+            endsOn: 2220-01-01T00:00:00
+            workCycleId: 9
+          departmentId: 14
+          managerId: 455
+          rolePrincipalId: 55
+          habilitedRoles:
+          - id: 59
+          - id: 81
+          - id: 64
+          - id: 65
+          cultureId: 1040
+          address: "13, rue Martin Bernard, 75 Paris"
+          bankName: My Bank
+          directLine: "0123456789"
+          jobTitle: Developer
+          gender: Male
+          nationality: French
+          personalEmail: email@test.fr
+          personalMobile: "0612345678"
+          professionalMobile: "0612345678"
+          quote: string
+    UsersUpdateByIdRequest1:
+      properties: {}
+      type: object
+    UsersListExcludedFormerResponse:
+      example:
+        items:
+        - dtContractStart: dtContractStart
+          calendar:
+            name: name
+            id: 6
+            url: url
+          lastName: lastName
+          mail: mail
+          manager:
+            name: name
+            id: 1
+            url: url
+          displayName: displayName
+          login: login
+          birthDate: birthDate
+          url: url
+          picture:
+            id: id
+            href: href
+          employeeNumber: employeeNumber
+          legalEntity:
+            name: name
+            id: 1
+            url: url
+          firstName: firstName
+          modifiedOn: modifiedOn
+          habilitedRoles:
+          - name: name
+            id: 1
+            url: url
+          - name: name
+            id: 1
+            url: url
+          culture:
+            name: name
+            id: 1
+            url: url
+          name: name
+          id: 0
+          applicationData: "{}"
+          dtContractEnd: ""
+          department:
+            name: name
+            id: 1
+            url: url
+          userWorkCycles:
+          - OwnerID: 5
+            StartsOn: StartsOn
+            WorkCycleID: 2
+            Id: 5
+            EndsOn: EndsOn
+          - OwnerID: 5
+            StartsOn: StartsOn
+            WorkCycleID: 2
+            Id: 5
+            EndsOn: EndsOn
+          rolePrincipal:
+            name: name
+            id: 1
+            url: url
+        - dtContractStart: dtContractStart
+          calendar:
+            name: name
+            id: 6
+            url: url
+          lastName: lastName
+          mail: mail
+          manager:
+            name: name
+            id: 1
+            url: url
+          displayName: displayName
+          login: login
+          birthDate: birthDate
+          url: url
+          picture:
+            id: id
+            href: href
+          employeeNumber: employeeNumber
+          legalEntity:
+            name: name
+            id: 1
+            url: url
+          firstName: firstName
+          modifiedOn: modifiedOn
+          habilitedRoles:
+          - name: name
+            id: 1
+            url: url
+          - name: name
+            id: 1
+            url: url
+          culture:
+            name: name
+            id: 1
+            url: url
+          name: name
+          id: 0
+          applicationData: "{}"
+          dtContractEnd: ""
+          department:
+            name: name
+            id: 1
+            url: url
+          userWorkCycles:
+          - OwnerID: 5
+            StartsOn: StartsOn
+            WorkCycleID: 2
+            Id: 5
+            EndsOn: EndsOn
+          - OwnerID: 5
+            StartsOn: StartsOn
+            WorkCycleID: 2
+            Id: 5
+            EndsOn: EndsOn
+          rolePrincipal:
+            name: name
+            id: 1
+            url: url
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner'
+          type: array
+      type: object
+      x-examples:
+        example-1:
+          items:
+          - id: 416
+            name: John Doe
+            url: http://lucca.test/api/users/1
+            displayName: Doe John
+            modifiedOn: 2015-09-07T10:20:06.583
+            lastName: DOE
+            firstName: John
+            login: jdoe
+            mail: no-reply@lucca.fr
+            dtContractStart: 2014-09-01T00:00:00
+            birthDate: 1989-12-22T00:00:00
+            employeeNumber: "00057"
+            calendar:
+              id: 1
+              url: http://lucca.test/api/v3/publicHolidayCalendars/1
+              name: Jours fériés en France
+            culture:
+              id: 1036
+              name: français (France)
+              url: http://lucca.test/api/v3/cultures/1036
+            picture:
+              id: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+              url: http://lucca.test/api/v3/files/74d381db-dd4d-4f64-bc1e-582d806e58a8
+              name: jdoe.png
+            applicationData: {}
+            legalEntity:
+              id: 1
+              name: Lucca
+              url: http://lucca.test/api/v3/legalEntities/1
+            department:
+              id: 13
+              name: BU Timmi/Lucca
+              url: http://lucca.test/api/v3/departments/13
+            manager:
+              id: 383
+              name: Roger Smith
+              url: http://lucca.test/api/v3/users/383
+            rolePrincipal:
+              id: 55
+              name: User
+              url: http://lucca.test/api/v3/roles/55
+            habilitedRoles:
+            - id: 59
+              name: Employee +
+              url: http://lucca.test/api/v3/roles/59
+            userWorkCycles:
+            - Id: 288
+              OwnerID: 416
+              WorkCycleID: 6
+              StartsOn: 1900-01-01T00:00:00
+              EndsOn: 2015-03-09T00:00:00
+      x-konfig-is-used-in-successful-response: true
+    UsersCreateNewUserResponse:
+      example:
+        lastName: Doe
+        mail: jdoe@corp.com
+        gender: Male
+        departmentId: 14
+        jobTitle: Developer
+        bankName: My Bank
+        login: jdoe
+        employeeNumber: "000000452"
+        personalEmail: email@test.fr
+        cspId: 2
+        quote: string
+        legalEntityId: 1
+        professionalMobile: "0612345678"
+        rolePrincipalId: 55
+        userWorkCycles:
+        - endsOn: endsOn
+          id: 0
+          startsOn: startsOn
+          workCycleId: 6
+        - endsOn: endsOn
+          id: 0
+          startsOn: startsOn
+          workCycleId: 6
+        dtContractStart: dtContractStart
+        address: "13, rue Martin Bernard, 75 Paris"
+        managerId: 455
+        birthDate: 1989-12-22T00:00:00
+        directLine: "0123456789"
+        cultureId: 1040
+        firstName: John
+        personalMobile: "0612345678"
+        habilitedRoles:
+        - id: 1
+        - id: 1
+        calendarId: ""
+        nationality: French
+        dtContractEnd: ""
+      properties:
+        firstName:
+          example: John
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-firstName
+        lastName:
+          example: Doe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-lastName
+        mail:
+          example: jdoe@corp.com
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-mail
+        login:
+          example: jdoe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-login
+        legalEntityId:
+          example: 1
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-legalEntityId
+        dtContractStart:
+          type: string
+        dtContractEnd: {}
+        cspId:
+          example: 2
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-cspId
+        calendarId:
+          type: "null"
+        employeeNumber:
+          example: "000000452"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-employeeNumber
+        birthDate:
+          example: 1989-12-22T00:00:00
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-birthDate
+        userWorkCycles:
+          items:
+            $ref: '#/components/schemas/UsersUpdateByIdRequest_userWorkCycles_inner'
+          type: array
+        departmentId:
+          example: 14
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-departmentId
+        managerId:
+          example: 455
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-managerId
+        rolePrincipalId:
+          example: 55
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-rolePrincipalId
+        habilitedRoles:
+          items:
+            $ref: '#/components/schemas/UsersUpdateByIdRequest_habilitedRoles_inner'
+          type: array
+        cultureId:
+          example: 1040
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-cultureId
+        address:
+          example: "13, rue Martin Bernard, 75 Paris"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-address
+        bankName:
+          example: My Bank
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-bankName
+        directLine:
+          example: "0123456789"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-directLine
+        jobTitle:
+          example: Developer
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-jobTitle
+        gender:
+          example: Male
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-gender
+        nationality:
+          example: French
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-nationality
+        personalEmail:
+          example: email@test.fr
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-personalEmail
+        personalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-personalMobile
+        professionalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-professionalMobile
+        quote:
+          example: string
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-quote
+      required:
+      - departmentId
+      - dtContractStart
+      - firstName
+      - lastName
+      - legalEntityId
+      - login
+      - mail
+      - rolePrincipalId
+      type: object
+      x-examples:
+        example-1:
+          firstName: John
+          lastName: Doe
+          mail: jdoe@corp.com
+          login: jdoe
+          legalEntityId: 1
+          cspId: 2
+          employeeNumber: "000000452"
+          birthDate: 1989-12-22T00:00:00
+          userWorkCycles:
+          - id: 67
+            startsOn: 1920-01-01T00:00:00
+            endsOn: 2220-01-01T00:00:00
+            workCycleId: 9
+          departmentId: 14
+          managerId: 455
+          rolePrincipalId: 55
+          habilitedRoles:
+          - id: 59
+          - id: 81
+          - id: 64
+          - id: 65
+          cultureId: 1040
+          address: "13, rue Martin Bernard, 75 Paris"
+          bankName: My Bank
+          directLine: "0123456789"
+          jobTitle: Developer
+          gender: Male
+          nationality: French
+          personalEmail: email@test.fr
+          personalMobile: "0612345678"
+          professionalMobile: "0612345678"
+          quote: string
+      x-konfig-is-used-in-successful-response: true
+    UsersGetByIdResponse:
+      example:
+        dtContractStart: 2014-09-01T00:00:00
+        calendar:
+          name: Jours fériés en France
+          id: 1
+          url: http://lucca.test/api/v3/publicHolidayCalendars/1
+        lastName: DOE
+        mail: no-reply@lucca.fr
+        manager:
+          name: Roger Smith
+          id: 383
+          url: http://lucca.test/api/v3/users/383
+        displayName: Doe John
+        login: jdoe
+        birthDate: 1989-12-22T00:00:00
+        url: http://lucca.test/api/users/1
+        picture:
+          name: jdoe.png
+          id: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+          href: href
+        employeeNumber: "00057"
+        legalEntity:
+          name: Lucca
+          id: 1
+          url: http://lucca.test/api/v3/legalEntities/1
+        firstName: John
+        modifiedOn: 2015-09-07T10:20:06.583
+        habilitedRoles:
+        - name: name
+          id: 1
+          url: url
+        - name: name
+          id: 1
+          url: url
+        culture:
+          name: français (France)
+          id: 1036
+          url: http://lucca.test/api/v3/cultures/1036
+        name: John Doe
+        id: 416
+        applicationData: "{}"
+        dtContractEnd: ""
+        department:
+          name: BU Timmi/Lucca
+          id: 13
+          url: http://lucca.test/api/v3/departments/13
+        userWorkCycles:
+        - OwnerID: 5
+          StartsOn: StartsOn
+          WorkCycleID: 2
+          Id: 5
+          EndsOn: EndsOn
+        - OwnerID: 5
+          StartsOn: StartsOn
+          WorkCycleID: 2
+          Id: 5
+          EndsOn: EndsOn
+        rolePrincipal:
+          name: User
+          id: 55
+          url: http://lucca.test/api/v3/roles/55
+      properties:
+        id:
+          example: 416
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-id
+        name:
+          example: John Doe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-name
+        url:
+          example: http://lucca.test/api/users/1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-url
+        displayName:
+          example: Doe John
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-displayName
+        modifiedOn:
+          example: 2015-09-07T10:20:06.583
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-modifiedOn
+        lastName:
+          example: DOE
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-lastName
+        firstName:
+          example: John
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-firstName
+        login:
+          example: jdoe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-login
+        mail:
+          example: no-reply@lucca.fr
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-mail
+        dtContractStart:
+          example: 2014-09-01T00:00:00
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-dtContractStart
+        dtContractEnd:
+          type: "null"
+        birthDate:
+          example: 1989-12-22T00:00:00
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-birthDate
+        employeeNumber:
+          example: "00057"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-employeeNumber
+        calendar:
+          $ref: '#/components/schemas/UsersGetByIdResponse_calendar'
+        culture:
+          $ref: '#/components/schemas/UsersGetByIdResponse_culture'
+        picture:
+          $ref: '#/components/schemas/UsersGetByIdResponse_picture'
+        applicationData:
+          type: object
+        legalEntity:
+          $ref: '#/components/schemas/UsersGetByIdResponse_legalEntity'
+        department:
+          $ref: '#/components/schemas/UsersGetByIdResponse_department'
+        manager:
+          $ref: '#/components/schemas/UsersGetByIdResponse_manager'
+        rolePrincipal:
+          $ref: '#/components/schemas/UsersGetByIdResponse_rolePrincipal'
+        habilitedRoles:
+          items:
+            $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+          type: array
+        userWorkCycles:
+          items:
+            $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_userWorkCycles_inner'
+          type: array
+      type: object
+      x-examples:
+        example-1:
+          id: 416
+          name: John Doe
+          url: http://lucca.test/api/users/1
+          displayName: Doe John
+          modifiedOn: 2015-09-07T10:20:06.583
+          lastName: DOE
+          firstName: John
+          login: jdoe
+          mail: no-reply@lucca.fr
+          dtContractStart: 2014-09-01T00:00:00
+          birthDate: 1989-12-22T00:00:00
+          employeeNumber: "00057"
+          calendar:
+            id: 1
+            url: http://lucca.test/api/v3/publicHolidayCalendars/1
+            name: Jours fériés en France
+          culture:
+            id: 1036
+            name: français (France)
+            url: http://lucca.test/api/v3/cultures/1036
+          picture:
+            id: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+            url: http://lucca.test/api/v3/files/74d381db-dd4d-4f64-bc1e-582d806e58a8
+            name: jdoe.png
+          applicationData: {}
+          legalEntity:
+            id: 1
+            name: Lucca
+            url: http://lucca.test/api/v3/legalEntities/1
+          department:
+            id: 13
+            name: BU Timmi/Lucca
+            url: http://lucca.test/api/v3/departments/13
+          manager:
+            id: 383
+            name: Roger Smith
+            url: http://lucca.test/api/v3/users/383
+          rolePrincipal:
+            id: 55
+            name: User
+            url: http://lucca.test/api/v3/roles/55
+          habilitedRoles:
+          - id: 59
+            name: Employee +
+            url: http://lucca.test/api/v3/roles/59
+          userWorkCycles:
+          - Id: 288
+            OwnerID: 416
+            WorkCycleID: 6
+            StartsOn: 1900-01-01T00:00:00
+            EndsOn: 2015-03-09T00:00:00
+      x-konfig-is-used-in-successful-response: true
+    konfig-generated-schema-components-schemas-User-properties-id:
+      example: 416
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-name:
+      example: John Doe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-url:
+      example: http://lucca.test/api/users/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-displayName:
+      example: Doe John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-modifiedOn:
+      example: 2015-09-07T10:20:06.583
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-lastName:
+      example: DOE
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-firstName:
+      example: John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-login:
+      example: jdoe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-mail:
+      example: no-reply@lucca.fr
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-dtContractStart:
+      example: 2014-09-01T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-birthDate:
+      example: 1989-12-22T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-employeeNumber:
+      example: "00057"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-calendar-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-calendar-properties-url:
+      example: http://lucca.test/api/v3/publicHolidayCalendars/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-calendar-properties-name:
+      example: Jours fériés en France
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-culture-properties-id:
+      example: 1036
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-culture-properties-name:
+      example: français (France)
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-culture-properties-url:
+      example: http://lucca.test/api/v3/cultures/1036
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-picture-properties-id:
+      example: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-picture-properties-url:
+      example: http://lucca.test/api/v3/files/74d381db-dd4d-4f64-bc1e-582d806e58a8
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-picture-properties-name:
+      example: jdoe.png
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-name:
+      example: Cadre (218 jours)
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-url:
+      example: https://lucca.local.dev/api/v3/leaveprofiles/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-name:
+      example: Lucca
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-url:
+      example: https://lucca.local.dev/api/v3/utimeprofile_ede6d6bb22bcb47bf5b839d5f653fc7e41122f0eea37a7786ea9e095537a705c/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-name:
+      example: Lucca
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-url:
+      example: http://lucca.test/api/v3/legalEntities/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-department-properties-id:
+      example: 13
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-department-properties-name:
+      example: BU Timmi/Lucca
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-department-properties-url:
+      example: http://lucca.test/api/v3/departments/13
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-manager-properties-id:
+      example: 383
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-manager-properties-name:
+      example: Roger Smith
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-manager-properties-url:
+      example: http://lucca.test/api/v3/users/383
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-id:
+      example: 55
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-name:
+      example: User
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-url:
+      example: http://lucca.test/api/v3/roles/55
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-firstName:
+      example: John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-lastName:
+      example: Doe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-mail:
+      example: jdoe@corp.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-login:
+      example: jdoe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-legalEntityId:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cspId:
+      example: 2
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-employeeNumber:
+      example: "000000452"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-birthDate:
+      example: 1989-12-22T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-departmentId:
+      example: 14
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-managerId:
+      example: 455
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-rolePrincipalId:
+      example: 55
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cultureId:
+      example: 1040
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-address:
+      example: "13, rue Martin Bernard, 75 Paris"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-bankName:
+      example: My Bank
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-directLine:
+      example: "0123456789"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-jobTitle:
+      example: Developer
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-gender:
+      example: Male
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-nationality:
+      example: French
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalEmail:
+      example: email@test.fr
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalMobile:
+      example: "0612345678"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-professionalMobile:
+      example: "0612345678"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-quote:
+      example: string
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-firstName:
+      example: John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-lastName:
+      example: Doe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-mail:
+      example: jdoe@corp.com
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-login:
+      example: jdoe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-legalEntityId:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-cspId:
+      example: 2
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-employeeNumber:
+      example: "000000452"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-birthDate:
+      example: 1989-12-22T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-departmentId:
+      example: 14
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-managerId:
+      example: 455
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-rolePrincipalId:
+      example: 55
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-cultureId:
+      example: 1040
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-address:
+      example: "13, rue Martin Bernard, 75 Paris"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-bankName:
+      example: My Bank
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-directLine:
+      example: "0123456789"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-jobTitle:
+      example: Developer
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-gender:
+      example: Male
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-nationality:
+      example: French
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-personalEmail:
+      example: email@test.fr
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-personalMobile:
+      example: "0612345678"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-professionalMobile:
+      example: "0612345678"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersCreateNewUserResponse-properties-quote:
+      example: string
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-id:
+      example: 416
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-name:
+      example: John Doe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-url:
+      example: http://lucca.test/api/users/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-displayName:
+      example: Doe John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-modifiedOn:
+      example: 2015-09-07T10:20:06.583
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-lastName:
+      example: DOE
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-firstName:
+      example: John
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-login:
+      example: jdoe
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-mail:
+      example: no-reply@lucca.fr
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-dtContractStart:
+      example: 2014-09-01T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-birthDate:
+      example: 1989-12-22T00:00:00
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-employeeNumber:
+      example: "00057"
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-url:
+      example: http://lucca.test/api/v3/publicHolidayCalendars/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-name:
+      example: Jours fériés en France
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-id:
+      example: 1036
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-name:
+      example: français (France)
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-url:
+      example: http://lucca.test/api/v3/cultures/1036
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-picture-properties-id:
+      example: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-picture-properties-name:
+      example: jdoe.png
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-id:
+      example: 1
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-name:
+      example: Lucca
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-url:
+      example: http://lucca.test/api/v3/legalEntities/1
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-id:
+      example: 13
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-name:
+      example: BU Timmi/Lucca
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-url:
+      example: http://lucca.test/api/v3/departments/13
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-id:
+      example: 383
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-name:
+      example: Roger Smith
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-url:
+      example: http://lucca.test/api/v3/users/383
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-id:
+      example: 55
+      type: number
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-name:
+      example: User
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-url:
+      example: http://lucca.test/api/v3/roles/55
+      type: string
+      x-do-not-generate: true
+    konfig-generated-schema-single-parameter-schema-get--api-v3-users:
+      properties:
+        dtContractEnd:
+          type: string
+        dtContractStart:
+          type: string
+        id:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        modifiedAt:
+          type: string
+        paging:
+          type: string
+        fields:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        mail:
+          type: string
+        login:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - dtContractEnd
+      - dtContractStart
+      - id
+      - modifiedAt
+      - paging
+      - fields
+      - mail
+      - login
+    konfig-generated-schema-single-parameter-schema-post--api-v3-users:
+      properties: {}
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-get--api-v3-users-userId:
+      properties:
+        fields:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - fields
+    konfig-generated-schema-single-parameter-schema-put--api-v3-users-userId:
+      properties:
+        fields:
+          items:
+            description: "WARNING: Missing items property in array schema. Missing\
+              \ items property has been filled with this AnyType schema."
+          type: array
+        firstName:
+          example: John
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-firstName
+        lastName:
+          example: Doe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-lastName
+        mail:
+          example: jdoe@corp.com
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-mail
+        login:
+          example: jdoe
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-login
+        legalEntityId:
+          example: 1
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-legalEntityId
+        cspId:
+          example: 2
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cspId
+        calendarId:
+          type: "null"
+        employeeNumber:
+          example: "000000452"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-employeeNumber
+        birthDate:
+          example: 1989-12-22T00:00:00
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-birthDate
+        userWorkCycles:
+          items:
+            properties:
+              id:
+                type: integer
+              startsOn:
+                type: string
+              endsOn:
+                type: string
+              workCycleId:
+                type: integer
+            type: object
+          type: array
+        departmentId:
+          example: 14
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-departmentId
+        managerId:
+          example: 455
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-managerId
+        rolePrincipalId:
+          example: 55
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-rolePrincipalId
+        habilitedRoles:
+          items:
+            properties:
+              id:
+                type: integer
+            type: object
+          type: array
+        cultureId:
+          example: 1040
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-cultureId
+        address:
+          example: "13, rue Martin Bernard, 75 Paris"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-address
+        bankName:
+          example: My Bank
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-bankName
+        directLine:
+          example: "0123456789"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-directLine
+        jobTitle:
+          example: Developer
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-jobTitle
+        gender:
+          example: Male
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-gender
+        nationality:
+          example: French
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-nationality
+        personalEmail:
+          example: email@test.fr
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalEmail
+        personalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-personalMobile
+        professionalMobile:
+          example: "0612345678"
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-professionalMobile
+        quote:
+          example: string
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersUpdateByIdRequest-properties-quote
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - fields
+    User_calendar:
+      properties:
+        id:
+          example: 1
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-calendar-properties-id
+        url:
+          example: http://lucca.test/api/v3/publicHolidayCalendars/1
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-calendar-properties-url
+        name:
+          example: Jours fériés en France
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-calendar-properties-name
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_culture:
+      properties:
+        id:
+          example: 1036
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-culture-properties-id
+        name:
+          example: français (France)
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-culture-properties-name
+        url:
+          example: http://lucca.test/api/v3/cultures/1036
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-culture-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_picture:
+      properties:
+        id:
+          example: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-picture-properties-id
+        url:
+          example: http://lucca.test/api/v3/files/74d381db-dd4d-4f64-bc1e-582d806e58a8
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-picture-properties-url
+        name:
+          example: jdoe.png
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-picture-properties-name
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_applicationData_profile_figgo:
+      properties:
+        id:
+          example: 1
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-id
+        name:
+          example: Cadre (218 jours)
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-name
+        url:
+          example: https://lucca.local.dev/api/v3/leaveprofiles/1
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_figgo-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_applicationData_profile_utime:
+      properties:
+        id:
+          example: 1
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-id
+        name:
+          example: Lucca
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-name
+        url:
+          example: https://lucca.local.dev/api/v3/utimeprofile_ede6d6bb22bcb47bf5b839d5f653fc7e41122f0eea37a7786ea9e095537a705c/1
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-applicationData-properties-profile_utime-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_applicationData:
+      properties:
+        profile_figgo:
+          $ref: '#/components/schemas/User_applicationData_profile_figgo'
+        profile_utime:
+          $ref: '#/components/schemas/User_applicationData_profile_utime'
+      required:
+      - profile_figgo
+      - profile_utime
+      type: object
+    User_legalEntity:
+      properties:
+        id:
+          example: 1
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-id
+        name:
+          example: Lucca
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-name
+        url:
+          example: http://lucca.test/api/v3/legalEntities/1
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-legalEntity-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_department:
+      properties:
+        id:
+          example: 13
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-department-properties-id
+        name:
+          example: BU Timmi/Lucca
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-department-properties-name
+        url:
+          example: http://lucca.test/api/v3/departments/13
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-department-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_manager:
+      properties:
+        id:
+          example: 383
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-manager-properties-id
+        name:
+          example: Roger Smith
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-manager-properties-name
+        url:
+          example: http://lucca.test/api/v3/users/383
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-manager-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_rolePrincipal:
+      properties:
+        id:
+          example: 55
+          type: number
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-id
+        name:
+          example: User
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-name
+        url:
+          example: http://lucca.test/api/v3/roles/55
+          minLength: 1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-User-properties-rolePrincipal-properties-url
+      required:
+      - id
+      - name
+      - url
+      type: object
+    User_habilitedRoles_inner:
+      properties:
+        id:
+          type: number
+        name:
+          minLength: 1
+          type: string
+        url:
+          minLength: 1
+          type: string
+      required:
+      - id
+      - name
+      - url
+    User_userWorkCycles_inner:
+      properties:
+        Id:
+          type: number
+        OwnerID:
+          type: number
+        WorkCycleID:
+          type: number
+        StartsOn:
+          minLength: 1
+          type: string
+        EndsOn:
+          minLength: 1
+          type: string
+      required:
+      - EndsOn
+      - Id
+      - OwnerID
+      - StartsOn
+      - WorkCycleID
+    UsersUpdateByIdRequest_userWorkCycles_inner:
+      example:
+        endsOn: endsOn
+        id: 0
+        startsOn: startsOn
+        workCycleId: 6
+      properties:
+        id:
+          type: integer
+        startsOn:
+          type: string
+        endsOn:
+          type: string
+        workCycleId:
+          type: integer
+      type: object
+    UsersUpdateByIdRequest_habilitedRoles_inner:
+      example:
+        id: 1
+      properties:
+        id:
+          type: integer
+      type: object
+    UsersListExcludedFormerResponse_items_inner_calendar:
+      example:
+        name: name
+        id: 6
+        url: url
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        name:
+          type: string
+      type: object
+    UsersListExcludedFormerResponse_items_inner_culture:
+      example:
+        name: name
+        id: 1
+        url: url
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+      type: object
+    UsersListExcludedFormerResponse_items_inner_picture:
+      example:
+        id: id
+        href: href
+      properties:
+        id:
+          type: string
+        href:
+          type: string
+      type: object
+    UsersListExcludedFormerResponse_items_inner_userWorkCycles_inner:
+      example:
+        OwnerID: 5
+        StartsOn: StartsOn
+        WorkCycleID: 2
+        Id: 5
+        EndsOn: EndsOn
+      properties:
+        Id:
+          type: integer
+        OwnerID:
+          type: integer
+        WorkCycleID:
+          type: integer
+        StartsOn:
+          type: string
+        EndsOn:
+          type: string
+      type: object
+    UsersListExcludedFormerResponse_items_inner:
+      example:
+        dtContractStart: dtContractStart
+        calendar:
+          name: name
+          id: 6
+          url: url
+        lastName: lastName
+        mail: mail
+        manager:
+          name: name
+          id: 1
+          url: url
+        displayName: displayName
+        login: login
+        birthDate: birthDate
+        url: url
+        picture:
+          id: id
+          href: href
+        employeeNumber: employeeNumber
+        legalEntity:
+          name: name
+          id: 1
+          url: url
+        firstName: firstName
+        modifiedOn: modifiedOn
+        habilitedRoles:
+        - name: name
+          id: 1
+          url: url
+        - name: name
+          id: 1
+          url: url
+        culture:
+          name: name
+          id: 1
+          url: url
+        name: name
+        id: 0
+        applicationData: "{}"
+        dtContractEnd: ""
+        department:
+          name: name
+          id: 1
+          url: url
+        userWorkCycles:
+        - OwnerID: 5
+          StartsOn: StartsOn
+          WorkCycleID: 2
+          Id: 5
+          EndsOn: EndsOn
+        - OwnerID: 5
+          StartsOn: StartsOn
+          WorkCycleID: 2
+          Id: 5
+          EndsOn: EndsOn
+        rolePrincipal:
+          name: name
+          id: 1
+          url: url
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+        displayName:
+          type: string
+        modifiedOn:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        login:
+          type: string
+        mail:
+          type: string
+        dtContractStart:
+          type: string
+        dtContractEnd:
+          type: "null"
+        birthDate:
+          type: string
+        employeeNumber:
+          type: string
+        calendar:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_calendar'
+        culture:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+        picture:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_picture'
+        applicationData:
+          type: object
+        legalEntity:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+        department:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+        manager:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+        rolePrincipal:
+          $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+        habilitedRoles:
+          items:
+            $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_culture'
+          type: array
+        userWorkCycles:
+          items:
+            $ref: '#/components/schemas/UsersListExcludedFormerResponse_items_inner_userWorkCycles_inner'
+          type: array
+      type: object
+    UsersGetByIdResponse_calendar:
+      example:
+        name: Jours fériés en France
+        id: 1
+        url: http://lucca.test/api/v3/publicHolidayCalendars/1
+      properties:
+        id:
+          example: 1
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-id
+        url:
+          example: http://lucca.test/api/v3/publicHolidayCalendars/1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-url
+        name:
+          example: Jours fériés en France
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-calendar-properties-name
+      type: object
+    UsersGetByIdResponse_culture:
+      example:
+        name: français (France)
+        id: 1036
+        url: http://lucca.test/api/v3/cultures/1036
+      properties:
+        id:
+          example: 1036
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-id
+        name:
+          example: français (France)
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-name
+        url:
+          example: http://lucca.test/api/v3/cultures/1036
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-culture-properties-url
+      type: object
+    UsersGetByIdResponse_picture:
+      example:
+        name: jdoe.png
+        id: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+        href: href
+      properties:
+        id:
+          example: 74d381db-dd4d-4f64-bc1e-582d806e58a8
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-picture-properties-id
+        href:
+          type: string
+        name:
+          example: jdoe.png
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-picture-properties-name
+      type: object
+    UsersGetByIdResponse_legalEntity:
+      example:
+        name: Lucca
+        id: 1
+        url: http://lucca.test/api/v3/legalEntities/1
+      properties:
+        id:
+          example: 1
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-id
+        name:
+          example: Lucca
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-name
+        url:
+          example: http://lucca.test/api/v3/legalEntities/1
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-legalEntity-properties-url
+      type: object
+    UsersGetByIdResponse_department:
+      example:
+        name: BU Timmi/Lucca
+        id: 13
+        url: http://lucca.test/api/v3/departments/13
+      properties:
+        id:
+          example: 13
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-id
+        name:
+          example: BU Timmi/Lucca
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-name
+        url:
+          example: http://lucca.test/api/v3/departments/13
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-department-properties-url
+      type: object
+    UsersGetByIdResponse_manager:
+      example:
+        name: Roger Smith
+        id: 383
+        url: http://lucca.test/api/v3/users/383
+      properties:
+        id:
+          example: 383
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-id
+        name:
+          example: Roger Smith
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-name
+        url:
+          example: http://lucca.test/api/v3/users/383
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-manager-properties-url
+      type: object
+    UsersGetByIdResponse_rolePrincipal:
+      example:
+        name: User
+        id: 55
+        url: http://lucca.test/api/v3/roles/55
+      properties:
+        id:
+          example: 55
+          type: integer
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-id
+        name:
+          example: User
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-name
+        url:
+          example: http://lucca.test/api/v3/roles/55
+          type: string
+          x-konfig-generated-schema: konfig-generated-schema-components-schemas-UsersGetByIdResponse-properties-rolePrincipal-properties-url
+      type: object
+  securitySchemes:
+    Authorization:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-konfig-globally-required-security: true
+
